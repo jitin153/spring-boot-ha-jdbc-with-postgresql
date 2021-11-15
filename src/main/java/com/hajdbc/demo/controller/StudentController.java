@@ -18,11 +18,11 @@ public class StudentController {
 
 	private static final String FIND_BY_ID = "select * from students where id = ?";
 	private static final String FIND_ALL = "select * from students";
-	private static final String INSERT = "INSERT INTO students (name, email) VALUES ('#NAME','#EMAIL')";
+	private static final String INSERT = "INSERT INTO students (name, email, db) VALUES ('#NAME','#EMAIL','ANY')";
 
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
-
+ 
 	@Autowired
 	private StudentRowMapper studentRowMapper;
 

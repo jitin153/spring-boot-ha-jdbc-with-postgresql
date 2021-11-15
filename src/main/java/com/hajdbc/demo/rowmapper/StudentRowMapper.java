@@ -17,6 +17,7 @@ public class StudentRowMapper implements RowMapper<Student> {
 		value.setId(rs.getLong("ID"));
 		value.setName(rs.getString("NAME"));
 		value.setEmail(rs.getString("EMAIL"));
+		value.setDb(rs.getString("DB"));
 		return value;
 	}
 }

@@ -4,7 +4,8 @@ public class Student {
 	private Long id;
 	private String name;
 	private String email;
-
+	private String db;
+	
 	public Long getId() {
 		return id;
 	}
@@ -28,4 +29,13 @@ public class Student {
 	public void setEmail(String email) {
 		this.email = email;
 	}
+
+	public String getDb() {
+		return db;
+	}
+
+	public void setDb(String db) {
+		this.db = db;
+	}
+	
 }
