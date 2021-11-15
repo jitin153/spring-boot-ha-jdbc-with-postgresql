@@ -18,7 +18,7 @@ public class StudentController {
 
 	private static final String FIND_BY_ID = "select * from students where id = ?";
 	private static final String FIND_ALL = "select * from students";
-	private static final String INSERT = "INSERT INTO students (name, email, db) VALUES ('#NAME','#EMAIL','ANY')";
+	private static final String INSERT = "INSERT INTO students (name, email) VALUES ('#NAME','#EMAIL')";
 
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
