@@ -38,13 +38,19 @@ public class HaJdbcConfig {
 
 	@Value("${app.database1.url}")
 	private String database1Url;
-
+	
+	@Value("${app.database1.weight:1}")
+	private int database1Weight;
+	
 	@Value("${app.database2.id}")
 	private String database2Id;
 
 	@Value("${app.database2.url}")
 	private String database2Url;
 
+	@Value("${app.database2.weight:1}")
+	private int database2Weight;
+	
 	@Value("${app.database.username}")
 	private String databaseUsername;
 
@@ -124,17 +130,18 @@ public class HaJdbcConfig {
 	}
 
 	private List<DriverDatabase> driverDatabases() {
-		DriverDatabase db1 = createDriverDatabase(database1Id, database1Url);
-		DriverDatabase db2 = createDriverDatabase(database2Id, database2Url);
+		DriverDatabase db1 = createDriverDatabase(database1Id, database1Url, database1Weight);
+		DriverDatabase db2 = createDriverDatabase(database2Id, database2Url, database2Weight);
 		return Arrays.asList(db1, db2);
 	}
 
-	private DriverDatabase createDriverDatabase(String id, String url) {
+	private DriverDatabase createDriverDatabase(String id, String url, int weight) {
 		DriverDatabase driverDatabase = new DriverDatabase();
 		driverDatabase.setId(id);
 		driverDatabase.setLocation(url);
 		driverDatabase.setUser(databaseUsername);
 		driverDatabase.setPassword(databasePassword);
+		driverDatabase.setWeight(weight);
 		return driverDatabase;
 	}
 }
