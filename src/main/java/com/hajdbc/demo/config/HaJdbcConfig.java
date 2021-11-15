@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,7 +34,9 @@ import net.sf.hajdbc.util.concurrent.cron.CronExpression;
  */
 @Configuration
 public class HaJdbcConfig {
-
+	
+	private static final Logger LOG = LoggerFactory.getLogger(HaJdbcConfig.class);
+	
 	@Value("${app.database1.id}")
 	private String database1Id;
 
@@ -62,6 +66,9 @@ public class HaJdbcConfig {
 
 	@Value("${app.hajdbc.auto-activation.cron-expression}")
 	private String autoActivationCronExpression;
+	
+	@Value("${app.hajdbc.failure-detection.cron-expression}")
+	private String failureDetectionCronExpression;
 
 	@Value("${app.hajdbc.balancer-factory.id}")
 	private String balancerFactoryId;
@@ -106,7 +113,7 @@ public class HaJdbcConfig {
 	@PostConstruct
 	public void register() {
 		DriverDatabaseClusterConfiguration config = new DriverDatabaseClusterConfiguration();
-		try {
+		try {			
 			config.setDatabases(driverDatabases());
 			config.setDialectFactory(new PostgreSQLDialectFactory());
 			config.setDatabaseMetaDataCacheFactory(
@@ -121,11 +128,12 @@ public class HaJdbcConfig {
 			config.setIdentityColumnDetectionEnabled(isIdentityColumnDetectionEnabled);
 			config.setSequenceDetectionEnabled(isSequenceDetectionEnabled);
 			config.setAutoActivationExpression(new CronExpression(autoActivationCronExpression));
-
+			config.setFailureDetectionExpression(new CronExpression(failureDetectionCronExpression));
+			//config.setEmptyClusterAllowed(false);
 			Driver.setConfigurationFactory(clusterName,
 					new SimpleDatabaseClusterConfigurationFactory<java.sql.Driver, DriverDatabase>(config));
 		} catch (ParseException e) {
-			System.out.println(e);
+			LOG.error("Error occurred: {}",e.getMessage());
 		}
 	}
 
